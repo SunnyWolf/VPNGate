@@ -5,31 +5,37 @@ cd $workPath
 country=$1
 confPath=/etc/NetworkManager/system-connections/
 
+#Is an argument right?
 if ! (echo $country | grep '[a-z|A-Z]\{2\}')
 then
 	notify-send -i dialog-error 'Wrong argument!'
 	exit 1
 fi
 
+#Convert the argument to uppercase
 country=$(echo $country | awk '{print toupper($0)}')
 
+#Are there servers?
 if ! (test -d configs/$country)
 then
 	notify-send -i dialog-error 'There's no such servers'
 	exit 1
 fi
 
+#Are there servers?
 if ! (ls configs/$country | grep '/')
 then
 	notify-send -i dialog-error 'There's no such servers'
 	exit 1
 fi
 
+#Delete all vpn connections
 nmcli con show | grep 'vpn' | cut -d' ' -f1 | while read name
 do
 	nmcli con del $name
 done
 
+#Add new connection
 path=$workPath/configs/$country
 ls -1 $path | while read name
 do

@@ -3,25 +3,32 @@
 cd $(dirname $0)
 
 url=http://www.vpngate.net/api/iphone/
+#Main variables
 oPath=configs
 sFile=servers
 lFile=logs
 tFile=temp
 
+#Make directory for saving config files
+mkdir -p $oPath
+
 #Getting list of servers
 notify-send -i network-vpn 'Updating VPN servers: DOWNLOADING'
 wget -O $tFile -o $lFile $url
 
-#Проверка 
-if grep -q '*vpn_servers' $tFile
+#Has an information gotten?
+if ! grep -q '*vpn_servers' $tFile
 then
-	grep -v '^#\|^\*\|,-,' $tFile > $sFile
-else
 	notify-send -i dialog-error 'Updating VPN servers: FAIL'
 	exit 1
 fi
-rm $tFile
 
+#Deleting useless lines
+grep -v '^#\|^\*\|,-,' $tFile > $sFile
+
+#Deleting temp file
+rm $tFile
+#Deleting old configs
 rm -r $oPath/*
 
 #Parse file
