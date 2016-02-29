@@ -6,16 +6,16 @@ The script downloads list of servers, parsing it and saves config files '.ovpn' 
 **Requirements:**
 
  - wget
- - notifi-send
+ - notify-send
 
 Set.sh
 ============
 The script takes argument 'Country-Short'. It looks for servers in config's directory and add openvpn connections in network manager.
 
-**Usage:** sudo set.sh '[Country-Short]'
+**Usage:** sudo set.sh '[Country-Short]' **or** gksu set.sh '[Country-Short]'
 
 **Requirements:**
 
- - sudo
+ - sudo | gksu
  - nmcli (NetworkManager)
- - notifi-send
+ - notify-send
