@@ -8,7 +8,7 @@ confPath=/etc/NetworkManager/system-connections/
 #Is an argument right?
 if ! (echo $country | grep '[a-z|A-Z]\{2\}')
 then
-	notify-send -i dialog-error 'Wrong argument!'
+	su $USER -c 'notify-send -i dialog-error "Wrong argument!"'
 	exit 1
 fi
 
@@ -18,14 +18,14 @@ country=$(echo $country | awk '{print toupper($0)}')
 #Are there servers?
 if ! (test -d configs/$country)
 then
-	notify-send -i dialog-error 'There's no such servers'
+	su $USER -c 'notify-send -i dialog-error "There's no such servers"'
 	exit 1
 fi
 
 #Are there servers?
 if ! (ls configs/$country | grep '/')
 then
-	notify-send -i dialog-error 'There's no such servers'
+	su $USER -c 'notify-send -i dialog-error "There's no such servers"'
 	exit 1
 fi
 
@@ -35,7 +35,7 @@ do
 	nmcli con del $name
 done
 
-#Add new connection
+#Add new connections
 path=$workPath/configs/$country
 ls -1 $path | while read name
 do
@@ -76,8 +76,6 @@ do
 done
 
 nmcli c reload
-
-notifi-send -i network-vpn 'VPN servers was updated'
-
+su $USER -c "notify-send -i network-vpn 'Added new VPN connections'"
 
 
