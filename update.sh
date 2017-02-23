@@ -14,7 +14,7 @@ mkdir -p $oPath
 
 #Getting list of servers
 notify-send -i network-vpn 'Updating VPN servers: DOWNLOADING'
-wget -O $tFile -o $lFile $url
+wget --https-only -O $tFile -o $lFile $url
 
 #Has an information gotten?
 if ! grep -q '*vpn_servers' $tFile
